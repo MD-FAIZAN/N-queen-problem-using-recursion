@@ -1,0 +1,100 @@
+//n-queen.cpp
+//city of fireman vincent.cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+//my hash_defs
+
+#define ll long long int
+#define sf scanf
+#define sf_d(var) scanf("%d",&var)
+#define sf_c(var) scanf("%c",&var)
+#define sf_2d(var1,var2) scanf("%d %d",&var1,&var2)
+#define sf_3d(var1,var2,var3) scanf("%d %d %d",&var1,&var2,&var3)
+#define sf_dd(var) scanf("%lld",&var)
+#define sf_2dd(var1,var2) scanf("%lld %lld",&var1,&var2)
+#define sf_3dd(var1,var2,var3) scanf("%lld %lld %lld",&var1,&var2,&var3)
+#define pf printf
+#define pf_d(var) printf("%d",var)
+#define pf_dd(var) printf("%lld",var)
+#define psp printf(" ")
+#define pnlin printf("\n")
+#define vi vector<int>
+#define vvi vector< vector<int> >
+#define pb push_back
+#define v_iter vector<int>::iterator
+#define v_riter vector<int>::reverse_iterator
+#define fr(start,end) for(int z=start;z<end;z++)
+#define tr(cont,it) for(typeof(cont.begin()) it=cont.begin();it!=cont.end();it++)
+#define mod 1000000007
+#define srt(cont) sort(cont.begin(),cont.end())
+#define all(m) m.begin(),m.end()
+#define mp make_pair
+#define fa_io std::ios::sync_with_stdio(false)
+#define fil(v,k) iota(all(v),k)
+
+bool n_queen(vector< vector<bool> >& m,vector< pair<int,int> >& vrc,int n,int level)
+{
+    if(level==n)
+        return true;
+    int i,k,row,col;
+    for(i=0;i<n;i++)
+    {
+        for(k=0;k<vrc.size();k++)
+        {
+            row=vrc[k].first;
+            col=vrc[k].second;
+            if(i==col || (level-i)==row-col || (level+i)==row+col )
+                break;
+        }
+        if(k==vrc.size())
+        {
+            vrc.pb(mp(level,i));
+            if(n_queen(m,vrc,n,level+1))
+            {
+                m[level][i]=true;
+                return true;
+            }
+            vrc.pop_back();
+        }
+    }
+    
+    return false;
+}
+
+vector< vector<bool> > n_queen_util(int n)
+{
+    int i;
+    for(i=0;i<n;i++)
+    {
+        vector< pair<int,int> > vrc; //vrc for vector of rows and columns
+        vrc.pb(mp(0,i));
+        vector< vector<bool> > m(n,vector<bool>(n,false));
+        m[0][i]=true;
+        int level=0;
+        if(n_queen(m,vrc,n,level+1))
+            return m;
+    }
+    return vector< vector<bool> >(n,vector<bool>(n,false));
+}
+
+int main()
+{
+    int n;
+    sf_d(n);
+    vector< vector<bool> > m;
+    m=n_queen_util(n);
+    for(int i=0;i<m.size();i++)
+    {
+        for(int j=0;j<m[i].size();j++)
+        {
+            if(m[i][j])
+                pf("1 ");
+            else
+                pf("0 ");
+        }
+        pnlin;
+    }
+    
+    return 0;
+}
